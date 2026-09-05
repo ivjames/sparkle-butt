@@ -257,7 +257,7 @@ EOF
     # survives.
     sed -i "s|^\([[:space:]]*\)server_name $FQDN;|&\n\1include snippets/sparkle-art.conf;|" "$conf"
     grep -q 'snippets/sparkle-art.conf' "$conf" \
-      || die "couldn't inject the include into $conf — add 'include snippets/sparkle-art.conf;' to its server block(s) by hand."
+      || { rm -f "$backup"; die "couldn't inject the include into $conf — add 'include snippets/sparkle-art.conf;' to its server block(s) by hand."; }
     log "nginx: injected art snippet include into $conf"
   fi
   # An explicit branch, not `nginx -t && systemctl reload nginx`: under set -e
